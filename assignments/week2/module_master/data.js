@@ -20,4 +20,4 @@ const roles = {
   student: ["view"]
 };
 
-module.exports = { users, courses, cart, roles };
+module.exports = { users, courses, cart, roles }

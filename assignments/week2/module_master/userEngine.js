@@ -1,6 +1,11 @@
-const { users } = require('./data');
-
 // MODULE-1: USER PROCESSING ENGINE
+
+// Local data
+const users = [
+  { id: 1, name: "Ravi", role: "student", active: true },
+  { id: 2, name: "Anil", role: "admin", active: true },
+  { id: 3, name: "Suman", role: "student", active: false }
+];
 
 /**
  * Get only active users
@@ -47,6 +52,14 @@ function deactivateUser(id) {
     user.id === id ? { ...user, active: false } : user
   );
 }
+
+// Run and display outputs
+console.log(' USER ENGINE ');
+console.log('Active Users:');
+console.log(getActiveUsers());
+console.log('\nActive User Names:', getActiveUserNames());
+console.log('Has Admin:', hasAdmin());
+console.log('Find User by ID 2:', findUserById(2));
 
 module.exports = {
   getActiveUsers,

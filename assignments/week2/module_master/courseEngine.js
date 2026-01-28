@@ -1,54 +1,87 @@
-const { courses } = require('./data');
+// MODULE 3: SHOPPING CART ENGINE
 
-// MODULE 2: COURSE CATALOG ENGINE
+// Local data
+const courses = [
+  { id: 101, title: "JavaScript", price: 999, published: true },
+  { id: 102, title: "React", price: 1499, published: false },
+  { id: 103, title: "Node", price: 1299, published: true }
+];
+
+let cart = [
+  { courseId: 101, qty: 1 },
+  { courseId: 103, qty: 2 }
+];
 
 /**
- * Get published courses
- * @returns {Array} Published courses
+ * Merge cart with courses to get full course info
+ * @returns {Array} Cart items with full course information
  */
-function getPublishedCourses() {
-  return courses.filter(course => course.published);
+function getCartWithCourseInfo() {
+  return cart.map(item => {
+    const course = courses.find(c => c.id === item.courseId);
+    return {
+      ...item,
+      ...course
+    };
+  });
 }
 
 /**
- * Sort courses by price (high → low)
- * @returns {Array} Courses sorted by price descending
+ * Calculate total cart amount
+ * @returns {number} Total amount in cart
  */
-function sortCoursesByPrice() {
-  return [...courses].sort((a, b) => b.price - a.price);
+function calculateCartTotal() {
+  return cart.reduce((total, item) => {
+    const course = courses.find(c => c.id === item.courseId);
+    return total + (course ? course.price * item.qty : 0);
+  }, 0);
 }
 
 /**
- * Extract { title, price } only
- * @returns {Array} Array of objects with title and price
+ * Increase quantity of a course (immutably)
+ * @param {number} courseId - Course ID
+ * @param {number} increment - Amount to increase (default 1)
+ * @returns {Array} New cart array with updated quantity
  */
-function extractTitleAndPrice() {
-  return courses.map(({ title, price }) => ({ title, price }));
+function increaseQuantity(courseId, increment = 1) {
+  return cart.map(item =>
+    item.courseId === courseId
+      ? { ...item, qty: item.qty + increment }
+      : item
+  );
 }
 
 /**
- * Calculate total value of published courses
- * @returns {number} Total value of published courses
+ * Remove a course from cart
+ * @param {number} courseId - Course ID to remove
+ * @returns {Array} New cart array without the course
  */
-function calculatePublishedCoursesValue() {
-  return courses
-    .filter(course => course.published)
-    .reduce((total, course) => total + course.price, 0);
+function removeCourseFromCart(courseId) {
+  return cart.filter(item => item.courseId !== courseId);
 }
 
 /**
- * Add a new course immutably
- * @param {Object} newCourse - New course to add
- * @returns {Array} New courses array with added course
+ * Check if all cart items are paid courses
+ * @returns {boolean} True if all cart items are published (paid)
  */
-function addCourse(newCourse) {
-  return [...courses, newCourse];
+function areAllCartItemsPaid() {
+  return cart.every(item => {
+    const course = courses.find(c => c.id === item.courseId);
+    return course && course.published;
+  });
 }
+
+// Run and display outputs
+console.log('\n CART ENGINE ');
+console.log('Cart with Course Info:');
+console.log(JSON.stringify(getCartWithCourseInfo(), null, 2));
+console.log('\nCart Total:', calculateCartTotal());
+console.log('All Items Paid:', areAllCartItemsPaid());
 
 module.exports = {
-  getPublishedCourses,
-  sortCoursesByPrice,
-  extractTitleAndPrice,
-  calculatePublishedCoursesValue,
-  addCourse
+  getCartWithCourseInfo,
+  calculateCartTotal,
+  increaseQuantity,
+  removeCourseFromCart,
+  areAllCartItemsPaid
 };

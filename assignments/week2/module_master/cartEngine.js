@@ -1,6 +1,16 @@
-const { cart, courses } = require('./data');
-
 // MODULE 3: SHOPPING CART ENGINE
+
+// Local data
+const courses = [
+  { id: 101, title: "JavaScript", price: 999, published: true },
+  { id: 102, title: "React", price: 1499, published: false },
+  { id: 103, title: "Node", price: 1299, published: true }
+];
+
+let cart = [
+  { courseId: 101, qty: 1 },
+  { courseId: 103, qty: 2 }
+];
 
 /**
  * Merge cart with courses to get full course info
@@ -61,6 +71,13 @@ function areAllCartItemsPaid() {
   });
 }
 
+// Run and display outputs
+console.log('\n CART ENGINE ');
+console.log('Cart with Course Info:');
+console.log(JSON.stringify(getCartWithCourseInfo(), null, 2));
+console.log('\nCart Total:', calculateCartTotal());
+console.log('All Items Paid:', areAllCartItemsPaid());
+
 module.exports = {
   getCartWithCourseInfo,
   calculateCartTotal,
@@ -68,3 +85,4 @@ module.exports = {
   removeCourseFromCart,
   areAllCartItemsPaid
 };
+

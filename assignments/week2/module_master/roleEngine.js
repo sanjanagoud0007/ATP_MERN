@@ -1,6 +1,11 @@
-const { roles } = require('./data');
 
 // MODULE 4: ROLE & PERMISSION ENGINE
+
+// Local data
+const roles = {
+  admin: ["create", "update", "delete", "view"],
+  student: ["view"]
+};
 
 /**
  * Get all role names
@@ -38,6 +43,14 @@ function addModeratorRole(permissions = ["create", "update", "view"]) {
     moderator: permissions
   };
 }
+
+// Run and display outputs
+console.log('\n ROLE ENGINE ');
+console.log('All Role Names:', getAllRoleNames());
+console.log('Can Student Delete:', canStudentDelete());
+console.log('All Unique Permissions:', getAllUniquePermissions());
+console.log('\nRoles with Moderator Added:');
+console.log(addModeratorRole());
 
 module.exports = {
   getAllRoleNames,
